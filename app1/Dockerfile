@@ -16,7 +16,5 @@ COPY src/ .
 # expose port for flask app
 EXPOSE 50001
 
-ENV FLASK_APP=/code/app.py
-
 # command to run on container start
-CMD [ "flask", "run", "--host=0.0.0.0", "--port=50001" ]
+CMD [ "gunicorn", "--bind", "0.0.0.0:50001", "--access-logfile", "-", "app:app" ]
