@@ -1,22 +1,52 @@
-version: '3'
+version: '3.8'
 
 services:
   nginx:
     image: nginx:1.25
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
       - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - app1
       - app2
 
   app1:
     build: ./app1
-    ports:
-      - 50001:50001
+    expose:
+      - "50001"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+    depends_on:
+      - mariadb
 
   app2:
     build: ./app2
-    ports:
-      - 50002:50002
+    expose:
+      - "50002"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+    depends_on:
+      - mariadb
+
+  mariadb:
+    image: mariadb:10.5
+    expose:
+      - "3306"
+    environment:
+      - MARIADB_RANDOM_ROOT_PASSWORD=1
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+    volumes:
+      - "./db/schema.sql:/docker-entrypoint-initdb.d/1.sql" # bind mount
+      - "db-data:/var/lib/mysql" # volume
+
+volumes:
+  db-data: # make the volume persistent
