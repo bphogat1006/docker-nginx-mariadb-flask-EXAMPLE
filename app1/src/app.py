@@ -12,7 +12,7 @@ for i in range(conn_attempts):
         connection = pymysql.connect(host='mariadb',
                                     user=os.environ['MARIADB_USER'],
                                     password=os.environ['MARIADB_PASSWORD'],
-                                    database=os.environ['MARIADB_DATABASE'],)
+                                    database='flask_app_data',)
     except pymysql.err.OperationalError:
         print(f'Failed to connect to MariaDB (Attempt {i+1}/{conn_attempts})')
         sleep(2)

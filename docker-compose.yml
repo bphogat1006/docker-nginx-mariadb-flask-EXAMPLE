@@ -19,7 +19,6 @@ services:
       - PYTHONUNBUFFERED=1
       - MARIADB_USER=${MARIADB_USER}
       - MARIADB_PASSWORD=${MARIADB_PASSWORD}
-      - MARIADB_DATABASE=${MARIADB_DATABASE}
     depends_on:
       - mariadb
 
@@ -31,7 +30,6 @@ services:
       - PYTHONUNBUFFERED=1
       - MARIADB_USER=${MARIADB_USER}
       - MARIADB_PASSWORD=${MARIADB_PASSWORD}
-      - MARIADB_DATABASE=${MARIADB_DATABASE}
     depends_on:
       - mariadb
 
@@ -43,7 +41,6 @@ services:
       - MARIADB_RANDOM_ROOT_PASSWORD=1
       - MARIADB_USER=${MARIADB_USER}
       - MARIADB_PASSWORD=${MARIADB_PASSWORD}
-      - MARIADB_DATABASE=${MARIADB_DATABASE}
     volumes:
       - "./db/schema.sql:/docker-entrypoint-initdb.d/1.sql" # bind mount
       - "db-data:/var/lib/mysql" # volume
